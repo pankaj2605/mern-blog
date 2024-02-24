@@ -6,11 +6,11 @@ import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { updateStart,updateFailure,updateSuccess,deleteUserStart,deleteUserSuccess,deleteUserFailure,signoutSuccess } from '../redux/user/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 export default function DashProfile() {
-    const {currentUser,error}=useSelector(state=>state.user);
+    const {currentUser,error,loading}=useSelector(state=>state.user);
     const [imageFile,setImageFile]= useState(null);
     const [imageFileUrl,setImageFileUrl]=useState(null);
     const [imageFileUploadProgess,setImageFileUploadProgress]=useState(null);
@@ -158,6 +158,7 @@ export default function DashProfile() {
             }
             if(res.ok){
               dispatch(signoutSuccess());
+              navigate('/');
             }
           }catch(error){
             console.log(error.message)
@@ -194,11 +195,21 @@ export default function DashProfile() {
             <TextInput type='text' id='username' placeholder='username' defaultValue={currentUser.username} onChange={handleChange}/>
             <TextInput type='email' id='email' placeholder='email' defaultValue={currentUser.email} onChange={handleChange}/>
             <TextInput type='password' id='password' placeholder='password'  onChange={handleChange}/>
-            <Button type='submit' gradientDuoTone='purpleToBlue' outline>
-                Update
+            <Button type='submit' gradientDuoTone='purpleToBlue' outline disabled={loading|| imageFileUploading}>
+                {loading? 'loading ...' :'Update' }
             </Button>
+            {
+                currentUser.isAdmin && (
+                    <Link to={"/create-post"}>
+                        <Button type="Button" gradientDuoTone="purpleToPink" className='w-full'>
+                            Create a Post
+                        </Button>
+                    </Link>
+                    
+                )
+            }
         </form>
-        <div className='text-red-500 flex justify-between'>
+        <div className='text-red-500 flex justify-between mt-5'>
             <span onClick={()=>setShowModal(true)} className='cursor-pointer'> Delete Account</span>
             <span onClick={handleSignout} className='cursor-pointer'> Sign Out</span>
         </div>

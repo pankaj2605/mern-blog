@@ -5,7 +5,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { updateStart,updateFailure,updateSuccess,deleteUserStart,deleteUserSuccess,deleteUserFailure } from '../redux/user/userSlice';
+import { updateStart,updateFailure,updateSuccess,deleteUserStart,deleteUserSuccess,deleteUserFailure,signoutSuccess } from '../redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
@@ -138,13 +138,29 @@ export default function DashProfile() {
             });
             const data=await res.json();
             if(!res.ok){
-              return dispatch(deleteUserFailure(data.message));
+               dispatch(deleteUserFailure(data.message));
             }
             if(res.ok){
               dispatch(deleteUserSuccess(data))
             }
           }catch(error){
             dispatch(deleteUserFailure(error.message));
+          }
+      }
+      const handleSignout=async ()=>{
+        try{
+            const res =await fetch('api/user/signout',{
+              method:'POST',
+            });
+            const data=await res.json();
+            if(!res.ok){
+              console.log(data.message)
+            }
+            if(res.ok){
+              dispatch(signoutSuccess());
+            }
+          }catch(error){
+            console.log(error.message)
           }
       }
   return (
@@ -184,7 +200,7 @@ export default function DashProfile() {
         </form>
         <div className='text-red-500 flex justify-between'>
             <span onClick={()=>setShowModal(true)} className='cursor-pointer'> Delete Account</span>
-            <span className='cursor-pointer'> Sign Out</span>
+            <span onClick={handleSignout} className='cursor-pointer'> Sign Out</span>
         </div>
         {updateUserSuccess && (<Alert color='success' className='mt-5'>
                                     {updateUserSuccess}

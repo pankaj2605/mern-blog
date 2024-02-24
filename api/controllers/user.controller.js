@@ -35,10 +35,12 @@ export const updateUser =async(req,res,next)=>{
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
       }
-
-    if(! validateEmail(req.body.email)){
-        return next(errorHandler(400,'email must be valid email'))
+    if(req.body.email){
+        if(!validateEmail(req.body.email)){
+            return next(errorHandler(400,'email must be valid email'))
+        }
     }
+    
     try{
         const updateUser =await User.findByIdAndUpdate(req.params.userId,{
              $set:{
@@ -50,9 +52,9 @@ export const updateUser =async(req,res,next)=>{
         },{new:true});
             const {password,...rest}=updateUser._doc;
             res.status(200).json(rest);
-        }catch(error){
-            return next(error)
+    }catch(error){
+        return next(error)
 
-        }
+    }
     
 }

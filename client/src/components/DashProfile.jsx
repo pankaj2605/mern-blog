@@ -80,6 +80,7 @@ export default function DashProfile() {
                         }
                       })
                       setImageFileUploading(false);
+                      setImageFileUploadProgress(null)
                 })
             }
         );

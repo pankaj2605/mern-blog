@@ -209,7 +209,7 @@ export default function DashboardComp() {
                                             className='w-14 h-10 rounded-md bg-gray-500'
                                         />
                                     </Table.Cell>
-                                    <Table.Cell className='w-96'>
+                                    <Table.Cell className='w-110'>
                                         {post.title}
                                     </Table.Cell>
                                     <Table.Cell className='w-5'>

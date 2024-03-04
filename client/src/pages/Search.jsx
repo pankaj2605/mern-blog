@@ -11,7 +11,7 @@ export default function Search() {
     
     const [posts,setPosts] =useState([]);
     const [loading,setLoading]= useState(false);
-    const [showMore,setShowMore]=useState(false);
+    const [showMore,setShowMore]=useState(true);
     const location=useLocation();
     const navigate=useNavigate();
 
@@ -143,9 +143,10 @@ export default function Search() {
                     ))
                 }
                 {
-                    showMore && <button className='text-teal-500 text-lg hover:underline p-7' onClick={handleShowMore}>Show More</button>
+                    showMore && <button className='text-teal-500 text-lg hover:underline p-7 w-full' onClick={handleShowMore}>Show More</button>
                 }
             </div>
+            
         </div>
     </div>
   )
